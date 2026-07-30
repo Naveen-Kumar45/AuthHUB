@@ -76,7 +76,9 @@ form.addEventListener("submit", async (e) => {
         window.location.href = "/html/verify.html";
         return;
       }
-        showMessage(error.response.data.msg || error.message, "error");
+       
+       showMessage(error.response?.data?.msg || error.message, "error");
+       
     } finally {
         submitBtn.classList.remove("loading");
         submitBtn.disabled = false;

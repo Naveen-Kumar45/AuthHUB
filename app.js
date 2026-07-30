@@ -24,7 +24,31 @@ const authRoute = require("./routes/auth")
 
 //extra security layers
 app.set('trust proxy',1); // This line is used to tell the Express application that it is behind a proxy (like a load balancer or reverse proxy) and to trust the first proxy in the chain. This is important for applications that are deployed behind proxies, as it allows Express to correctly identify the client's IP address and other connection details. The '1' indicates that only the first proxy should be trusted.
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: [
+          "'self'",
+          "https://cdn.jsdelivr.net",
+        ],
+        styleSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          "https://cdnjs.cloudflare.com",
+          "https://fonts.googleapis.com",
+        ],
+        fontSrc: [
+          "'self'",
+          "https://cdnjs.cloudflare.com",
+          "https://fonts.gstatic.com",
+        ],
+        imgSrc: ["'self'", "data:"],
+      },
+    },
+  })
+);
 app.use(cors());
 app.use(xss());
 app.use(rateLimit({
