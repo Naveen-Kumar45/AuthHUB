@@ -6,20 +6,29 @@ const StatusCodes = require("http-status-codes")
 const forgotPassword = async (req,res) => {
     const {email} = req.body
 
+    console.log("1. Creating transporter");
+
     const user = await User.findOne({
         email
     })
+
+    console.log("2. Finding user");
 
     if (!user) {
         throw createError(StatusCodes.NOT_FOUND,"We couldn't find an account with this email address")
     }
 
+    console.log("3. User found");
+
     const resetToken =await forgotPasswordemail(email)
+
+    console.log("4. Before sendMail");
 
     res.status(200).json({
         msg : "A password reset link had been sent to your email",
         resetToken
     })
+    console.log("5. After sendMail");
 }
 
 const changePassword = async (req,res) => {
