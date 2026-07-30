@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign In</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="/css/login.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <div class="card">
+        <div class="card__content">
+          <div class="brand">
+            <div class="brand__icon">↗</div>
+            <span>AuthHub</span>
+          </div>
+          <h1>Welcome back</h1>
+          <p>Sign in to access your account and manage everything.</p>
+
+          <form>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" placeholder="Enter your email" />
+            </div>
+
+            <div class="form-group password-field">
+              <label for="password">Password</label>
+              <div class="password-input-wrapper">
+                <input id="password" name="password" type="password" placeholder="Enter your password"  />
+                <i class="fa-solid fa-eye" id="togglePassword"></i>
+              </div>
+            </div>
+
+            <button type="submit">Sign in</button>
+          </form>
+
+          <div class="extras">
+            <a href="forgot-password.html">Forgot password?</a>
+          </div>
+
+          <div class="switch">
+            New here?
+            <a href="/index.html">Create an account</a>
+          </div>
+
+          <div class="message-container" id="message-container" hidden>
+            <p class="message-text" id="message-text"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="/scripts/messages.js"></script>
+    <script src="/scripts/password-toggle.js"></script>
+    <script src="/scripts/login.js"></script>
+  </body>
+</html>
