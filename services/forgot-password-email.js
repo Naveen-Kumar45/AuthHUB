@@ -2,7 +2,9 @@ require("dotenv").config()
 const nodemailer = require("nodemailer")
 const User = require("../models/user-schema")
 
-    const forgotPasswordemail= async (email) => {
+const forgotPasswordemail= async (email) => {
+
+    console.log("before verify");
     const transporter = nodemailer.createTransport({
         host : 'smtp.gmail.com',
         port : 587,
@@ -12,6 +14,8 @@ const User = require("../models/user-schema")
             pass : process.env.EMAIL_PASS
             }
         })
+
+    console.log("after verify");
 
     const user = await User.findOne({email})
 
@@ -60,6 +64,7 @@ const User = require("../models/user-schema")
         console.log("reset link done")
     }catch(err){
         console.log("Error failed during sending mail")
+        throw err
     }
 
     return resetToken
