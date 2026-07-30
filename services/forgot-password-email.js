@@ -15,9 +15,15 @@ const forgotPasswordemail= async (email) => {
 
     const user = await User.findOne({email})
 
+    console.log("before token")
+
     const resetToken = user.createresetJWT()
+
+    console.log("after token")
     const frontendHost = process.env.FRONTEND_URL || `http://localhost:${process.env.PORT || 3000}`
+    console.log("mail host")
     const resetLink = `${frontendHost}/html/reset-password.html?token=${encodeURIComponent(resetToken)}`
+    console.log("mail resetlink")
 
     const mailOptions = {
         from: `"AuthHUB" <${process.env.EMAIL_ID}>`,
