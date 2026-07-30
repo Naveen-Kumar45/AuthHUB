@@ -1,4 +1,10 @@
 require("dotenv").config()
+const dns = require("node:dns");
+
+const dns = require("node:dns");
+
+// Prefer IPv4 over IPv6
+dns.setDefaultResultOrder("ipv4first");
 const nodemailer = require("nodemailer")
 const User = require("../models/user-schema")
 
@@ -6,7 +12,7 @@ const forgotPasswordemail= async (email) => {
 
     console.log("before verify");
     const transporter = nodemailer.createTransport({
-        host : 'smtp.gmail.com',
+        host: "74.125.24.109", // IPv4 for smtp.gmail.com
         port : 587,
         secure : false,
         auth : {
