@@ -12,8 +12,11 @@ const forgotPasswordemail= async (email) => {
         auth : {
             user : process.env.EMAIL_ID,
             pass : process.env.EMAIL_PASS
-            }
-        })
+        },
+        connectionTimeout: 10000,
+        greetingTimeout: 10000,
+        socketTimeout: 10000,
+    })
 
     console.log("after verify");
 
@@ -59,12 +62,15 @@ const forgotPasswordemail= async (email) => {
 
     };
 
+    console.log("Mail options is done")
     try {
         await transporter.sendMail(mailOptions)
         console.log("reset link done")
     }catch(err){
-        console.log("Error failed during sending mail")
-        throw err
+        console.error("sendMail error:", err);
+        console.error("Code:", err.code);
+        console.error("Response:", err.response);
+        throw err;
     }
 
     return resetToken
