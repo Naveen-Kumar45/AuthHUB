@@ -1,22 +1,13 @@
 require("dotenv").config()
-
-const nodemailer = require("nodemailer")
 const User = require("../models/user-schema")
+const sgMail = require("@sendgrid/mail")
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 const forgotPasswordemail= async (email) => {
 
     console.log("before verify");
-    const transporter = nodemailer.createTransport({
-        host: "smtp-relay.brevo.com",
-        port : 587,
-        secure : false,
-        auth : {
-            user : process.env.EMAIL_ID,
-            pass : process.env.EMAIL_PASS
-        }
-    })
     
-await transporter.verify()
 
     console.log("after verify");
 
@@ -33,7 +24,10 @@ await transporter.verify()
     console.log("mail resetlink")
 
     const mailOptions = {
-        from: `"AuthHUB" <${process.env.EMAIL_ID}>`,
+        from : {
+            email : process.env.EMAIL_ID,
+            name : "AuthHUB"
+        },
         to: email,
         subject: "Reset Your Password",
         html: `
@@ -64,7 +58,7 @@ await transporter.verify()
 
     console.log("Mail options is done")
     try {
-        await transporter.sendMail(mailOptions)
+        await sgMail.send(mailOptions)
         console.log("reset link done")
     }catch(err){
         console.error("sendMail error:", err);

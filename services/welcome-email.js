@@ -1,20 +1,16 @@
 require("dotenv").config()
-const nodemailer = require("nodemailer")
+const sgMail = require("@sendgrid/mail")
 
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 const welcomeMail = async(email,name) => {
-    const transporter = nodemailer.createTransport({
-        host : "smtp.gmail.com",
-        port : 587,
-        secure : false,
-        auth : {
-            user : process.env.EMAIL_ID,
-            pass : process.env.EMAIL_PASS
-        }
-    })
+    
 
     const mailOptions = {
-        from : `"AuthHUB" <${process.env.EMAIL_ID}>`,
+        from : {
+            email : process.env.EMAIL_ID,
+            name : "AuthHUB"
+        },
         to : email,
         subject : "Welcome to AuthHub! 🎉 Your Account is Ready",
         html : `
@@ -67,7 +63,7 @@ const welcomeMail = async(email,name) => {
             </html>`
     }
 
-    await transporter.sendMail(mailOptions)
+    await sgMail.send(mailOptions)
 }
 
 module.exports = welcomeMail

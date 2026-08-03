@@ -1,21 +1,15 @@
 require('dotenv').config()
 const nodemailer = require('nodemailer')
 const crypto = require("crypto")
+const sgMail = require("@sendgrid/mail")
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 //middlewares
 const OTP = require('../models/otp-schema')
 
 const verifyEmail = async (email,userID)=> {
-    const transporter = nodemailer.createTransport({
-        host : 'smtp.gmail.com',
-        port : 587,
-        secure : false,
-        auth : {
-            user : process.env.EMAIL_ID,
-            pass : process.env.EMAIL_PASS
-        }
-    })
-
+    
 
     await OTP.deleteOne({
         userId: userID,
@@ -34,10 +28,13 @@ const verifyEmail = async (email,userID)=> {
     console.log("Here is saved OTP : " + newOTP)
 
     const verificationToken = newOTP.createVerificationToken()
-
+    
 
     const mailOptions = {
-        from : `AuthHUB <${process.env.EMAIL_ID}>`,
+        from : {
+            email : process.env.EMAIL_ID,
+            name : "AuthHUB"
+        },
         to : email,
         subject : "Verify Your Email Address",
         html : `<div style="max-width:600px;margin:40px auto;padding:30px;border:1px solid #e5e5e5;border-radius:8px;font-family:Arial,sans-serif;">
@@ -65,7 +62,7 @@ const verifyEmail = async (email,userID)=> {
             </div>
     `}
 
-    await transporter.sendMail(mailOptions)
+    await sgMail.send(mailOptions)
 
     return verificationToken
 }
